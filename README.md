@@ -1,1 +1,1 @@
-Libyan Risk Reduction Management System
+Libyan National Tracking & Disaster Monitoring Portal

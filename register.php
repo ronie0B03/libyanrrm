@@ -1,3 +1,6 @@
+<?php
+  require_once 'process_registration.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,6 +28,21 @@
   <div class="container">
 
     <div class="card o-hidden border-0 shadow-lg my-5">
+          <!-- Alert Here -->
+          <?php
+            if(isset($_SESSION['registerError'])){
+          ?>
+          <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <?php
+              echo $_SESSION['registerError'];
+              unset($_SESSION['registerError']);
+            ?>
+          </div>
+          <?php
+            }
+          ?>
+          <!-- End Alert Here -->
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
@@ -34,27 +52,27 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
               </div>
-              <form class="user" name='register'>
+              <form class="user" method="post" action="process_registration.php">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name" required>
+                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name" name="fname" value="<?php if(isset($_GET['fname'])){echo $_GET['fname'];} ?>" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name" required>
+                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name" name='lname' value="<?php if(isset($_GET['lname'])){echo $_GET['lname'];} ?>" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address" required>
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address" name="email" value="<?php if(isset($_GET['email'])){echo $_GET['email'];} ?>" required>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" required>
+                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="password1" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password" required>
+                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password" name="password2" required>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block">
+                <button type="submit" class="btn btn-primary btn-user btn-block" name="register">
                   Register Account
                 </button>
               </form>

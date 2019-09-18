@@ -1,3 +1,6 @@
+<?php
+  require_once('process_registration.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,6 +33,21 @@
       <div class="col-xl-10 col-lg-12 col-md-9">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
+          <!-- Alert Here -->
+          <?php
+            if(isset($_SESSION['loginError'])){
+          ?>
+          <div class="alert alert-warning alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <?php
+              echo $_SESSION['loginError'];
+              unset($_SESSION['loginError']);
+            ?>
+          </div>
+          <?php
+            }
+          ?>
+          <!-- End Alert Here -->          
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">

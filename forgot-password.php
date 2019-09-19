@@ -1,3 +1,10 @@
+<?php
+  require_once 'process_registration.php';
+
+  if(isset($_SESSION['email'])){
+        header('location: ../libyanrrm');
+    }  
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +24,14 @@
   <link rel="icon" href="img/logo.png" sizes="16x16"> 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+<style>
+  .bg-gradient-primary {
+    background-color: #1B5B3A !important;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(50%,##1B5B3A),to(#1B5B3A)) !important;
+    background-image: linear-gradient(180deg,#29c675 10%,#1B5B3A 100%) !important;
+    background-size: cover !important;
+}
+</style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -42,9 +56,9 @@
                   </div>
                   <form class="user">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <input type="email" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
                     </div>
-                    <a href="login.html" class="btn btn-primary btn-user btn-block">
+                    <a href="#" class="btn btn-success btn-block">
                       Reset Password
                     </a>
                   </form>

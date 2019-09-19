@@ -1,5 +1,9 @@
 <?php
   require_once 'process_registration.php';
+
+  if(isset($_SESSION['email'])){
+        header('location: ../libyanrrm');
+    }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +24,14 @@
   <link rel="icon" href="img/logo.png" sizes="16x16"> 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+<style>
+  .bg-gradient-primary {
+    background-color: #1B5B3A !important;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(50%,##1B5B3A),to(#1B5B3A)) !important;
+    background-image: linear-gradient(180deg,#29c675 10%,#1B5B3A 100%) !important;
+    background-size: cover !important;
+}
+</style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -55,24 +66,24 @@
               <form class="user" method="post" action="process_registration.php">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name" name="fname" value="<?php if(isset($_GET['fname'])){echo $_GET['fname'];} ?>" required>
+                    <input type="text" class="form-control form-control" id="exampleFirstName" placeholder="First Name" name="fname" value="<?php if(isset($_GET['fname'])){echo $_GET['fname'];} ?>" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name" name='lname' value="<?php if(isset($_GET['lname'])){echo $_GET['lname'];} ?>" required>
+                    <input type="text" class="form-control form-control" id="exampleLastName" placeholder="Last Name" name='lname' value="<?php if(isset($_GET['lname'])){echo $_GET['lname'];} ?>" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address" name="email" value="<?php if(isset($_GET['email'])){echo $_GET['email'];} ?>" required>
+                  <input type="email" class="form-control form-control" id="exampleInputEmail" placeholder="Email Address" name="email" value="<?php if(isset($_GET['email'])){echo $_GET['email'];} ?>" required>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="password1" required>
+                    <input type="password" class="form-control form-control" id="exampleInputPassword" placeholder="Password" name="password1" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password" name="password2" required>
+                    <input type="password" class="form-control form-control" id="exampleRepeatPassword" placeholder="Repeat Password" name="password2" required>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block" name="register">
+                <button type="submit" class="btn btn-success btn-block" name="register">
                   Register Account
                 </button>
               </form>

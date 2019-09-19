@@ -1,5 +1,9 @@
 <?php
   require_once('process_registration.php');
+  
+  if(isset($_SESSION['email'])){
+        header('location: ../libyanrrm');
+    }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +24,14 @@
   <link rel="icon" href="img/logo.png" sizes="16x16"> 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+<style>
+  .bg-gradient-primary {
+    background-color: #1B5B3A !important;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(50%,##1B5B3A),to(#1B5B3A)) !important;
+    background-image: linear-gradient(180deg,#29c675 10%,#1B5B3A 100%) !important;
+    background-size: cover !important;
+}
+</style>
 </head>
 
 <body class="bg-gradient-primary">
@@ -55,24 +66,17 @@
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Libyan National Tracking & Disaster Monitoring Portal</h1>
                   </div>
-                  <form class="user">
+                  <form class="user" method="post" action="process_registration.php">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                      <!-- IMPORTANT: Change text to email later -->
+                      <input type="text" class="form-control form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email" value="<?php if(isset($_GET['email'])){echo $_GET['email'];} ?>" required>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                      <input type="password" class="form-control form-control" id="exampleInputPassword" placeholder="Password" name="password" required>
                     </div>
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember Me</label>
-                      </div>
-                    </div>
-                    <a href="index.php" class="btn btn-primary btn-user btn-block">
-                      Login
-                    </a>
+                    <button type="submit" class="btn btn-success btn-block" name="login">Login</button>
                   </form>
                   <hr>
                   <div class="text-center">

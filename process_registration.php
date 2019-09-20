@@ -28,7 +28,7 @@
 	if(isset($_POST['login'])){
 		 $email = strtolower($_POST['email']);
 		 $password = $_POST['password'];
-		$checkUser = $mysqli->query("SELECT * FROM users WHERE email='$email' AND password='$password' ");
+		 $checkUser = $mysqli->query("SELECT * FROM users WHERE email='$email' AND password='$password' ");
 
 		if(mysqli_num_rows($checkUser)==0){
 			$_SESSION['loginError'] = "Login error. Please try again";

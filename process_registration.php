@@ -1,5 +1,6 @@
 <?php
 	include('dbh.php');
+	
 	if(isset($_POST['register'])){
 		echo $fname = ucfirst($_POST['fname']);
 		echo $lname = ucfirst($_POST['lname']);

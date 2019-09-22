@@ -1,6 +1,11 @@
 <?php
   require_once('process_post.php');
   include('sidebar.php');
+
+  $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+  $getURI = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+  $_SESSION['getURI'] = $getURI;
+
   $getOwnStatus = mysqli_query($mysqli, "SELECT u.id, u.firstname, u.lastname, up.user_post, up.user_location, up.date_added
     FROM user_posts up
     JOIN users u
@@ -106,7 +111,7 @@
                   <div class="mb-2">
                     <div class="shadow alert alert-dismissible" style="font-size: 13px;" role="alert">
                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                       <img style="width: 2rem;" src="img/img_avatar.png"> <?php echo $newUsersSuggestion['firstname'].' '.$newUsersSuggestion['lastname']; ?>
+                       <a href="link.php?linkid=<?php echo $newUsersSuggestion['id']; ?>" class="text-gray-800"><img style="width: 2rem;" src="<?php echo $newUsersSuggestion['profile_image']; ?>"> <?php echo $newUsersSuggestion['firstname'].' '.$newUsersSuggestion['lastname']; ?></a>
                        <br/>
                        <a href="process_post.php?addlink=<?php echo $newUsersSuggestion['id']; ?>" class="" style="color: green;">+ Send Link Request</a>
                     </div>

@@ -116,7 +116,8 @@
             <div class="card shadow row mb-2">
               <div class="card shadow">
                 <div class="card-header">
-                  <h6 class="m-0 font-weight-bold"><a href="<?php echo "link.php?linkid=".$newFriendPost['id']; ?>" style="color: #1b5b3a;"><?php echo $newFriendPost['firstname'].' '.$newFriendPost['lastname'];  ?></a>
+                  <h6 class="m-0 font-weight-bold"><a href="<?php echo "link.php?linkid=".$newFriendPost['id']; ?>" style="color: #1b5b3a;">
+                    <img src="<?php echo $newFriendPost['profile_image']; ?>" style="width: 1.5rem; height: 1.5rem; border-radius: 50%; "> <?php echo $newFriendPost['firstname'].' '.$newFriendPost['lastname'];  ?></a>
                     <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
                 </div>
                 <div class="card-body">

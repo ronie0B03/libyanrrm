@@ -91,7 +91,7 @@
             <div class="card shadow col-xl-3 col-md-6 mb-2 mx-auto">
               <div class="card-body">
                 <p>
-                  <a href="<?php echo 'link.php?linkid='.$newAllFriends['id']; ?>" style="color: #1b5b3a;" target="_blank"><img style="height: 2rem; width: 2rem;" src="<?php echo $newAllFriends['profile_image']; ?>">
+                  <a href="<?php echo 'link.php?linkid='.$newAllFriends['id']; ?>" style="color: #1b5b3a;" target="_blank"><img style="height: 2rem; width: 2rem; border-radius: 50%;" src="<?php echo $newAllFriends['profile_image']; ?>">
                 <?php echo  $newAllFriends['firstname'].' '.$newAllFriends['lastname'];?></a></p>
                 <span style="font-size: 10px;" class="float-right">
                     <i class="far fa-compass"></i>

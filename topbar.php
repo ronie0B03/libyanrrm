@@ -67,7 +67,8 @@ if(mysqli_num_rows($getLinkRequest)==0){
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-800 small"><?php echo $_SESSION['full_name']; ?></span>
-                <i class="fas fa-user text-gray-800"></i>
+                <img src="<?php echo $_SESSION['profile_image']; ?>" style="width: 2rem; height: 2rem; border-radius: 50%;">
+                <!-- <i class="fas fa-user text-gray-800"></i> -->
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow-lg animated--grow-in" aria-labelledby="userDropdown" style="background-color: #1B5B3A;">

@@ -42,7 +42,7 @@ if(mysqli_num_rows($getLinkRequest)==0){
                 <a class="dropdown-item d-flex align-items-center" href="<?php echo "link.php?linkid=".$newLinkRequest['id']; ?>" target="" style="background-color: white;">
                   <div class="mr-3">
                     <div class="">
-                      <img style="width: 2rem; height: auto;" src="<?php echo $newLinkRequest['profile_image']; ?>">
+                      <img style="width: 2rem; height: auto; border-radius: 50%;" src="<?php echo $newLinkRequest['profile_image']; ?>">
                     </div>
                   </div>
                   <div>
@@ -75,7 +75,7 @@ if(mysqli_num_rows($getLinkRequest)==0){
                   Information
                 </h6>
                 <div style="background-color: white;">
-                  <center><?php echo $_SESSION['email']; ?></center>
+                  <center><a href="profile.php" class="text-gray-800"><?php echo $_SESSION['email']; ?></a></center>
                   <center><hr/>
                     <a style="color: #5D4037;" class="btn btn-sm btn-warning" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>

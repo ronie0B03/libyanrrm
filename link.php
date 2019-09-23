@@ -1,6 +1,5 @@
 <?php
   require_once('process_post.php');
-  include('sidebar.php');
 
   $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
   $getURI = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -18,6 +17,12 @@
 $requested = false;
 $requester = false;
   if(isset($_GET['linkid'])){
+
+    #Check if link is self;
+    if($_GET['linkid']==$user_id){
+      header("location: profile.php");
+    }
+
     #Get Link Information
     $linkID = $_GET['linkid'];
     $getLink = mysqli_query($mysqli, " SELECT * FROM users WHERE id = '$linkID' ");
@@ -37,6 +42,7 @@ $requester = false;
       AND to_user_id = '$linkID')");
     if(mysqli_num_rows($getRequest)>0){
       $requested = true;
+
       #Check if requester current session
       $checkRequester =  mysqli_query($mysqli, "SELECT *
         FROM user_links
@@ -69,6 +75,10 @@ $requester = false;
      $confirmed = true;
   }
 
+
+
+//Cheat the header files
+include('sidebar.php');
 ?>
 <title><?php echo $newLink['firstname'].' '.$newLink['lastname']; ?></title>
     <!-- Content Wrapper -->
@@ -81,10 +91,19 @@ $requester = false;
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
+          <?php
+          if(isset($_SESSION['message'])){?>
+            <div class="alert alert-<?=$_SESSION['msg_type']?> alert-dismissible">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <?php
+              echo $_SESSION['message'];
+              unset($_SESSION['message']);
+              ?>
+            </div>
+            <?php } ?>
           <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center mb-4">
-              <center><img src="<?php echo  $newLink['profile_image']; ?>"></center>
+            <div class="align-items-center mb-4">
+              <center><img style="width: 10rem; height: 10rem; border-radius: 50%; border: 3px solid #17A673;" src="<?php echo  $newLink['profile_image']; ?>"></center>
             </div>
           <div class="row">
             <div class="col-md-8" style="/* width: 70%;height:500px;background-color:green; */">
@@ -92,7 +111,7 @@ $requester = false;
               <div class="card shadow row mb-2" style="/*height:150px ; background-color: red;*/">
                 <div class="card shadow">
                   <div class="card-header text-center" style="width: 100%;">
-                    <h3 class="m-0 font-weight-bold" style="color: green;"><?php echo $newLink['firstname'].' '.$newLink['lastname']; ?></h3>
+                    <h3 class="m-0 font-weight-bold" style="color: #1b5b3a;"><?php echo $linkFullname = $newLink['firstname'].' '.$newLink['lastname']; ?></h3>
                   </div>                   
                  <div class="card-body text-center">
 <?php
@@ -129,20 +148,32 @@ else{
                 </div>
                 </div>
               </div>
-
+<?php
+  $getPosts = mysqli_query($mysqli, " SELECT * FROM user_posts WHERE user_id = '$linkID' ");
+  #print_r($getPosts);
+  if($confirmed){
+  while($newPosts=$getPosts->fetch_assoc()){
+    $getDateAdded = date_create($newPosts['date_added']);
+    $date_added = date_format($getDateAdded, 'F j, Y');
+    $time_added = date_format($getDateAdded, 'h:i A');
+    $newDateAdded = $date_added.' at '.$time_added;
+?>
               <div class="card shadow row mb-2">
                 <div class="card shadow">
                   <div class="card-header">
-                    <h6 class="m-0 font-weight-bold" style="color: green; ">Agiela Omar</h6>
+                    <h6 class="m-0 font-weight-bold" style="color: #1b5b3a;" ><?php echo $linkFullname;  ?>
+                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
                   </div>
                   <div class="card-body">
-                    <p>
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-
+                    <p> <?php echo $newPosts['user_post'];?> </p>
                   </div>
                 </div>
               </div>
+            <?php }
+          }else { ?>
+            <div class="card shadow row mb-2 alert alert-warning">Status posts are hidden to strangers</div>
+<?php } ?>
+
               <!-- End Feed Container -->
             </div>
 
@@ -154,14 +185,7 @@ else{
                 <div class="card-body">
 <?php while($newUsersSuggestion=$getUsersSuggestion->fetch_assoc()){ ?>                  
                   <!-- Content Suggestions -->
-                  <div class="mb-2">
-                    <div class="shadow alert alert-dismissible" style="font-size: 13px;" role="alert">
-                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                       <img style="width: 2rem;" src="<?php echo $newUsersSuggestion['profile_image']; ?>"> <?php echo $newUsersSuggestion['firstname'].' '.$newUsersSuggestion['lastname']; ?>
-                       <br/>
-                       <a href="process_post.php?addlink=<?php echo $newUsersSuggestion['id']; ?>" class="" style="color: green;">+ Send Link Request</a>
-                    </div>
-                  </div>                                       
+                    <?php include("suggestions.php"); ?>                                      
                   <!-- End Content Suggestions -->
 <?php } ?>
                  <center style="font-size: 11px;">--- NOTHING FOLLOWS ---</center>                   

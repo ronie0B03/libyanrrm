@@ -36,7 +36,7 @@
   #print_r($getFriendsPost);
 
 ?>
-<title>Home</title>
+<title>View Links</title>
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -59,7 +59,7 @@
           <?php } ?>
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">News Feed</h1>
+            <h1 class="h3 mb-0 text-gray-800">All Links</h1>
           </div>
 
           <div class="row">
@@ -68,71 +68,40 @@
               <div class="card shadow row mb-2" style="/*height:150px ; background-color: red;*/">
                 <div class="card shadow">
                   <div class="card-header" style="background-color: #1b5b3a;  ">
-                    <h6 class="m-0 font-weight-bold" style="color: white;">Create Post</h6>
+                    <h6 class="m-0 font-weight-bold" style="color: white;">Search Profile</h6>
                   </div>                   
                  <div class="card-body">
                   <div class="text-center">
                   </div>
-                    <form accept-charset="UTF-8" action="process_post.php" method="post">
-                      <textarea class="form-control" placeholder="Write something about your status" id="status_text" name="status_text" style="min-height: 100px; max-height: 100px;" required></textarea>
-                      <br/>
-                      <button type="submit" class="btn btn-sm ml-auto float-right" style="background-color: #1b5b3a; color: white;" name="status_post">POST</button>
-                      <br/>
+                    <form class="" style="width: 100%;">
+                      <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                      </div>
                     </form>
                 </div>
                 </div>
               </div>
-<!-- Own Status always on on top -->
-<?php while($newOwnStatus=$getOwnStatus->fetch_assoc()){
-  $getDateAdded = date_create($newOwnStatus['date_added']);
-  $date_added = date_format($getDateAdded, 'F j, Y');
-  $time_added = date_format($getDateAdded, 'h:i A');
-  $newDateAdded = $date_added.' at '.$time_added;
-  ?>
-            <div class="card shadow row mb-2">
-              <div class="card shadow">
-                <div class="card-header" style="background-color: #bbf7d8;">
-                  <h6 class="m-0 font-weight-bold"><a href="<?php echo "link.php?linkid=".$newOwnStatus['id']; ?>" style="color: #1b5b3a;"><?php echo $newOwnStatus['firstname'].' '.$newOwnStatus['lastname'].' (Just You)';  ?></a>
-                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
-                </div>
-                <div class="card-body">
-                <!--  <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="">
-                  </div> -->
-                  <p>
-                    <?php echo  $newOwnStatus['user_post'];?>
-                  </p>
-                  <span style="font-size: 10px;" class="float-right">
-                    <i class="far fa-compass"></i><!-- ADD LOCATION HERE --> Philippines</span>
-                </div>
+<!-- Get All Relatives -->
+          <div class="row">
+          <?php  $getAllFriends = mysqli_query($mysqli, " SELECT *
+                  FROM users
+                  WHERE (id IN (SELECT from_user_id FROM user_links WHERE to_user_id = '$user_id' AND linked = 'true')
+                         OR id IN (SELECT to_user_id FROM user_links WHERE from_user_id = '$user_id' AND linked = 'true')) ");
+                 while($newAllFriends=$getAllFriends->fetch_assoc()){ 
+                  ?>
+            <div class="card shadow col-xl-3 col-md-6 mb-2 mx-auto">
+              <div class="card-body">
+                <p>
+                  <a href="<?php echo 'link.php?linkid='.$newAllFriends['id']; ?>" style="color: #1b5b3a;" target="_blank"><img style="height: 2rem; width: 2rem;" src="<?php echo $newAllFriends['profile_image']; ?>">
+                <?php echo  $newAllFriends['firstname'].' '.$newAllFriends['lastname'];?></a></p>
+                <span style="font-size: 10px;" class="float-right">
+                    <i class="far fa-compass"></i>
+                    <!-- ADD LOCATION HERE -->Libya</span>
               </div>
             </div>
-<?php } ?>
-<?php while($newFriendPost=$getFriendsPost->fetch_assoc()){
-  $getDateAdded = date_create($newFriendPost['date_added']);
-  $date_added = date_format($getDateAdded, 'F j, Y');
-  $time_added = date_format($getDateAdded, 'h:i A');
-  $newDateAdded = $date_added.' at '.$time_added;?>
-            <div class="card shadow row mb-2">
-              <div class="card shadow">
-                <div class="card-header">
-                  <h6 class="m-0 font-weight-bold"><a href="<?php echo "link.php?linkid=".$newFriendPost['id']; ?>" style="color: #1b5b3a;"><?php echo $newFriendPost['firstname'].' '.$newFriendPost['lastname'];  ?></a>
-                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
-                </div>
-                <div class="card-body">
-                <!--  <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="">
-                  </div> -->
-                  <p>
-                    <?php echo  $newFriendPost['user_post'];?>
-                  </p>
-                  <span style="font-size: 10px;" class="float-right">
-                    <i class="far fa-compass"></i><!-- ADD LOCATION HERE --> Philippines</span>
-                </div>
-              </div>
-            </div>
-<?php } ?>              
-              <!-- End Feed Container -->
+          <?php } ?>
+          </div>       
+<!-- End Relatives -->
             </div>
 
             <div class="col-md-4">
@@ -143,7 +112,7 @@
                 <div class="card-body">
 <?php while($newUsersSuggestion=$getUsersSuggestion->fetch_assoc()){ ?>                  
                   <!-- Content Suggestions -->
-                  <?php include('suggestions.php'); ?>                                    
+                  <?php include('suggestions.php'); ?>                                
                   <!-- End Content Suggestions -->
 <?php } ?>
                  <center style="font-size: 11px;">--- NOTHING FOLLOWS ---</center>                   

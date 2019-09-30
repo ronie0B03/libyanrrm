@@ -13,6 +13,7 @@
     WHERE up.user_id='$user_id'
     ORDER BY date_added DESC
     LIMIT 1");
+
   //Get user suggestions
   $getUsersSuggestion = mysqli_query($mysqli, "SELECT * FROM users
     WHERE (id NOT IN (SELECT from_user_id FROM user_links WHERE from_user_id = '$user_id')
@@ -22,6 +23,7 @@
     AND id NOT IN (SELECT to_user_id FROM user_links WHERE to_user_id = '$user_id'))
     AND id <> '$user_id'
     LIMIT 10");
+  
   //Get Friends Posts
   $getFriendsPost = mysqli_query($mysqli, "SELECT * 
     FROM user_posts up
@@ -76,6 +78,11 @@
                     <form accept-charset="UTF-8" action="process_post.php" method="post">
                       <textarea class="form-control" placeholder="Write something about your status" id="status_text" name="status_text" style="min-height: 100px; max-height: 100px;" required></textarea>
                       <br/>
+                      <select name="status_safety" class="btn btn-sm float-left" style="border: 1px solid #1b5b3a;" required>
+                        <option disabled selected>Situtation</option>
+                        <option value="safe">Safe</option>
+                        <option value="danger">In Danger</option>
+                      </select>
                       <button type="submit" class="btn btn-sm ml-auto float-right" style="background-color: #1b5b3a; color: white;" name="status_post">POST</button>
                       <br/>
                     </form>

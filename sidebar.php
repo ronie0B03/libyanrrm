@@ -62,6 +62,12 @@ a:visited {
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   opacity: 0.7 !important; /* Firefox */
 }
+.center-div{
+  display:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
 </style>
 </head>
 
@@ -85,7 +91,7 @@ a:visited {
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item active" id="nav-item-home">
         <a class="nav-link" href="index.php">
           <i class="fas fa-home"></i>
           <span>Home</span></a>
@@ -115,8 +121,8 @@ a:visited {
         </div>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="#">
+      <li class="nav-item" id = "nav-item-safelocation">
+        <a class="nav-link" href="safelocation.php">
           <i class="fas fa-street-view"></i><i class="fas fa-street-view"></i>
           <span>Safe Location</span></a>
       </li>

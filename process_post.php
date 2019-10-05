@@ -9,9 +9,13 @@
 	if(isset($_POST['status_post'])){
 		$status_post = $_POST['status_text'];
 		$status_safety = $_POST['status_safety'];
+		$client_lng = $_POST['client_lng'];
+		$client_lat = $_POST['client_lat'];
+		$user_location = $_POST['user_location'];
 		$status_post = str_replace('"', "", $status_post);
 		$status_post = str_replace("'", "", $status_post);
-		$mysqli->query(" INSERT INTO user_posts ( user_id, user_status, user_post /*, user_location */) VALUES('$user_id', '$status_safety', '$status_post' ) ") or die ($mysqli->error());
+		$mysqli->query(" INSERT INTO user_posts ( user_id, user_status, user_post, user_long, user_lat, user_location /*, user_location */) 
+		VALUES('$user_id', '$status_safety', '$status_post', '$client_lng' ,'$client_lat', '$user_location' ) ") or die ($mysqli->error());
 		
 		echo $_SESSION['message'] = "Status posted!";
 		echo $_SESSION['msg_type'] = "success";

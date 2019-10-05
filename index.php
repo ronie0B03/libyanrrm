@@ -75,15 +75,25 @@
                  <div class="card-body">
                   <div class="text-center">
                   </div>
-                    <form accept-charset="UTF-8" action="process_post.php" method="post">
+                    <form accept-charset="UTF-8" action="process_post.php" method="post" id="form-status"
+                      onclick="navigator.geolocation.getCurrentPosition(showPosition);"
+                    >
                       <textarea class="form-control" placeholder="Write something about your status" id="status_text" name="status_text" style="min-height: 100px; max-height: 100px;" required></textarea>
                       <br/>
-                      <label class="float-left font-weight-bold">Situation: </label>
+                      <label class="font-weight-bold float-left" style="">Situation: </label>
                       <select name="status_safety" class="btn btn-sm float-left" style="border: 1px solid #1b5b3a; margin-left: 1%;" required>
-                        <option value="safe" selected>Safe</option>
+                        <option disabled selected>Situtation</option>
+                        <option selected value="safe">Safe</option>
                         <option value="danger">In Danger</option>
                       </select>
-                      <button type="submit" class="btn btn-sm ml-auto float-right" style="background-color: #1b5b3a; color: white;" name="status_post">POST</button>
+                      <input type="hidden" name="client_lng" value="" />
+                      <input type="hidden" name="client_lat" value="" />
+                      <input type="hidden" name="user_location" value="" />
+                      <button type="submit"
+                       class="btn btn-sm ml-auto float-right" 
+                       style="background-color: #1b5b3a; color: white;"
+                       name="status_post">POST</button>
+                      <span id="status-post-message" class="float-right" style="margin:5px;color:red;display:none;">You need to allow location to post</span>
                       <br/>
                     </form>
                 </div>
@@ -110,7 +120,7 @@
                     <?php echo  $newOwnStatus['user_post'];?>
                   </p>
                   <span style="font-size: 10px;" class="float-right">
-                    <i class="far fa-compass"></i><!-- ADD LOCATION HERE --> Philippines</span>
+                    <i class="far fa-compass"></i> <?php echo  $newOwnStatus['user_location'];?></span>
                 </div>
               </div>
             </div>
@@ -167,3 +177,50 @@
 <?php
   include('footer.php');
 ?>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+
+    $("#form-status").on("submit",()=>{
+
+
+        var lat = $(this).find('input[name="client_lat"]');
+        var lng = $(this).find('input[name="client_lng"]');
+
+        if(lat.val().trim().length > 0 &&
+           lng.val().trim().length > 0){
+            return true;
+        }
+        
+      $("#status-post-message").css({"display":"block"});
+        return false; 
+    });
+});
+
+function showPosition(position){
+  
+  var lat = $("#form-status").find('input[name="client_lat"]');
+  var lng = $("#form-status").find('input[name="client_lng"]');
+  var loc = $("#form-status").find('input[name="user_location"]');
+
+  lat.val(position.coords.latitude);
+  lng.val(position.coords.longitude);
+
+  var geocoding_url="https://maps.googleapis.com/maps/api/geocode/json?";
+  geocoding_url += "latlng=";
+  geocoding_url += position.coords.latitude + ","
+  geocoding_url += position.coords.longitude + "&"
+  geocoding_url += "key=AIzaSyArrxFTbz_rmzdZg68nNyMmWkTARS_hfrY"
+
+  loc.val("Unknown Location");
+  $.get(geocoding_url,(data,status)=>{
+    if(status == "success"){
+      if(data.results.length > 0){
+        loc.val(data.results[0].formatted_address);
+      }
+    }
+  });
+}
+
+</script>

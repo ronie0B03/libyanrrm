@@ -6,7 +6,7 @@
   $getURI = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   $_SESSION['getURI'] = $getURI;
 
-  $getOwnStatus = mysqli_query($mysqli, "SELECT u.id, u.firstname, u.lastname, up.user_post, up.user_location, up.date_added
+  $getOwnStatus = mysqli_query($mysqli, "SELECT u.id, u.firstname, u.lastname, up.user_post, up.user_status, up.user_location, up.date_added
     FROM user_posts up
     JOIN users u
     ON u.id = up.user_id
@@ -119,11 +119,14 @@
   $date_added = date_format($getDateAdded, 'F j, Y');
   $time_added = date_format($getDateAdded, 'h:i A');
   $newDateAdded = $date_added.' at '.$time_added;
+  $status = $newOwnStatus['user_status'];
   ?>
             <div class="card shadow row mb-2">
               <div class="card shadow">
                 <div class="card-header">
                   <h6 class="m-0 font-weight-bold"><a href="<?php echo "link.php?linkid=".$newOwnStatus['id']; ?>" style="color: #1b5b3a;"><?php echo $newOwnStatus['firstname'].' '.$newOwnStatus['lastname'];  ?></a>
+                    <button class="btn btn-sm <?php if($status=='danger'){echo 'btn-danger';}else{echo 'btn-success';} ?>" style="font-size: 10px; padding: 1px;"><?php echo strtoupper($status); ?>
+                    </button>
                     <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
                 </div>
                 <div class="card-body">

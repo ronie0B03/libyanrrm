@@ -6,7 +6,7 @@
   $getURI = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
   $_SESSION['getURI'] = $getURI;
 
-  $getOwnStatus = mysqli_query($mysqli, "SELECT u.id, u.firstname, u.lastname, up.user_post, up.user_location, up.date_added
+  $getOwnStatus = mysqli_query($mysqli, "SELECT u.id, u.firstname, u.lastname, up.user_post, up.user_status, up.user_location, up.date_added
     FROM user_posts up
     JOIN users u
     ON u.id = up.user_id
@@ -117,10 +117,14 @@
                     <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="">
                   </div> -->
                   <p>
-                    <?php echo  $newOwnStatus['user_post'];?>
+                    <?php echo $newOwnStatus['user_post'];?>
                   </p>
+                  <span>
+                    <button class="btn btn-sm <?php  ?>"></button>
+                  </span>
                   <span style="font-size: 10px;" class="float-right">
-                    <i class="far fa-compass"></i> <?php echo  $newOwnStatus['user_location'];?></span>
+                    <i class="far fa-compass"></i> <?php echo  $newOwnStatus['user_location'];?>
+                  </span>
                 </div>
               </div>
             </div>
@@ -129,23 +133,30 @@
   $getDateAdded = date_create($newFriendPost['date_added']);
   $date_added = date_format($getDateAdded, 'F j, Y');
   $time_added = date_format($getDateAdded, 'h:i A');
-  $newDateAdded = $date_added.' at '.$time_added;?>
+  $newDateAdded = $date_added.' at '.$time_added;
+  $status = $newFriendPost['user_status'];
+  ?>
             <div class="card shadow row mb-2">
               <div class="card shadow">
                 <div class="card-header">
                   <h6 class="m-0 font-weight-bold"><a href="<?php echo "link.php?linkid=".$newFriendPost['id']; ?>" style="color: #1b5b3a;">
                     <img src="<?php echo $newFriendPost['profile_image']; ?>" style="width: 1.5rem; height: 1.5rem; border-radius: 50%; "> <?php echo $newFriendPost['firstname'].' '.$newFriendPost['lastname'];  ?></a>
-                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
+                    <button class="btn btn-sm <?php if($status=='danger'){echo 'btn-danger';}else{echo 'btn-success';} ?>" style="font-size: 10px; padding: 1px;"><?php echo strtoupper($status); ?>
+                    </button>
+                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?>
+                    </span>
+                  </h6>
                 </div>
                 <div class="card-body">
                 <!--  <div class="text-center">
                     <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="img/undraw_posting_photo.svg" alt="">
                   </div> -->
                   <p>
-                    <?php echo  $newFriendPost['user_post'];?>
+                    <?php echo $newFriendPost['user_post'];?>
                   </p>
                   <span style="font-size: 10px;" class="float-right">
-                    <i class="far fa-compass"></i><!-- ADD LOCATION HERE --> Philippines</span>
+                    <i class="far fa-compass"></i> <?php echo $newFriendPost['user_location'];?>
+                  </span>
                 </div>
               </div>
             </div>

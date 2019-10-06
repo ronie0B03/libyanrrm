@@ -157,15 +157,23 @@ else{
     $date_added = date_format($getDateAdded, 'F j, Y');
     $time_added = date_format($getDateAdded, 'h:i A');
     $newDateAdded = $date_added.' at '.$time_added;
+    $status = $newPosts['user_status'];
 ?>
               <div class="card shadow row mb-2">
                 <div class="card shadow">
                   <div class="card-header">
                     <h6 class="m-0 font-weight-bold" style="color: #1b5b3a;" ><?php echo $linkFullname;  ?>
-                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?></span></h6>
+                    <button class="btn btn-sm <?php if($status=='danger'){echo 'btn-danger';}else{echo 'btn-success';} ?>" style="font-size: 10px; padding: 1px;"><?php echo strtoupper($status); ?>
+                    </button>
+                    <span class="float-right font-weight-normal" style="font-size: 12px;"><?php echo $newDateAdded; ?>
+                    </span>
+                    </h6>
                   </div>
                   <div class="card-body">
                     <p> <?php echo $newPosts['user_post'];?> </p>
+                    <span style="font-size: 10px;" class="float-right">
+                    <i class="far fa-compass"></i> <?php echo $newPosts['user_location'];?>
+                  </span>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@
   require_once 'process_registration.php';
 
   if(isset($_SESSION['email'])){
-        header('location: ../libyanrrm');
+        header('location: index.php');
     }  
 ?>
 <!DOCTYPE html>

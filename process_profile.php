@@ -9,7 +9,7 @@
 		$currentDate = date_default_timezone_set('Asia/Manila');
 		$currentDate = date('Y-m-d-H-i-s');
 
-		echo $newName = 'PhotoID-'.$user_id.$currentDate;
+		$newName = 'PhotoID-'.$user_id.$currentDate;
 
 		// get details of the uploaded file
 		$fileTmpPath = $_FILES['profile_image']['tmp_name'];
@@ -18,9 +18,9 @@
 		$fileType = $_FILES['profile_image']['type'];
 		$fileNameCmps = explode(".", $fileName);
 		$fileExtension = strtolower(end($fileNameCmps));
-		print_r($fileNameCmps);
+		//print_r($fileNameCmps);
 		$newFileName = $newName . '.' . $fileExtension;
-		print_r($newFileName);
+		//print_r($newFileName);
 
 		// directory in which the uploaded file will be moved
 		$uploadFileDir = 'img/assets/';
@@ -28,15 +28,15 @@
 
 		if(move_uploaded_file($fileTmpPath, $dest_path))
 		{		
-			echo $_SESSION['message'] = "Profile Image changed successful!";
-			echo $_SESSION['msg_type'] = "success";
+			$_SESSION['message'] = "Profile Image changed successful!";
+			$_SESSION['msg_type'] = "success";
 
 			$mysqli->query("UPDATE users SET profile_image ='$dest_path' WHERE id='$user_id' ") or die ($mysqli->error());
 			header("location: ".$getURI);
 		}
 		else{
-			echo $_SESSION['message'] = "There was an error uploading the image receipt!";
-			echo $_SESSION['msg_type'] = "danger";
+			$_SESSION['message'] = "There was an error uploading the image receipt!";
+			$_SESSION['msg_type'] = "danger";
 		}
 	}
 

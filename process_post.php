@@ -17,8 +17,8 @@
 		$mysqli->query(" INSERT INTO user_posts ( user_id, user_status, user_post, user_long, user_lat, user_location /*, user_location */) 
 		VALUES('$user_id', '$status_safety', '$status_post', '$client_lng' ,'$client_lat', '$user_location' ) ") or die ($mysqli->error());
 		
-		echo $_SESSION['message'] = "Status posted!";
-		echo $_SESSION['msg_type'] = "success";
+		$_SESSION['message'] = "Status posted!";
+		$_SESSION['msg_type'] = "success";
 		
 		header("location: index.php");
 	}
@@ -28,19 +28,19 @@
 		$mysqli->query(" INSERT INTO user_links ( from_user_id, to_user_id /*, user_location */) VALUES('$user_id','$link_id' ) ") or die ($mysqli->error());
 
 
-		echo $_SESSION['message'] = "Link Request sent!";
-		echo $_SESSION['msg_type'] = "success";
+		$_SESSION['message'] = "Link Request sent!";
+		$_SESSION['msg_type'] = "success";
 
 		header("location: ".$getURI);		
 	}
 
 	if(isset($_GET['confirmfromlink'])){
-		echo $confirmfromlink = $_GET['confirmfromlink'];
-		echo $tolink = $_GET['tolink'];
+		$confirmfromlink = $_GET['confirmfromlink'];
+		$tolink = $_GET['tolink'];
 		$mysqli->query("UPDATE user_links SET linked='true' WHERE from_user_id='$confirmfromlink' AND to_user_id='$tolink' ") or die ($mysqli->error());
 		
-		echo $_SESSION['message'] = "Link Confirmed!";
-		echo $_SESSION['msg_type'] = "success";			
+		$_SESSION['message'] = "Link Confirmed!";
+		$_SESSION['msg_type'] = "success";			
 		
 		header("location: ".$getURI);
 	}

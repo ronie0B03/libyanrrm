@@ -5,6 +5,8 @@
 	if(isset($_SESSION['getURI'])){
 		$getURI = $_SESSION['getURI'];
 	}
+	$currentDate = date_default_timezone_set('Asia/Manila');
+	$currentDate = date('Y-m-d H:i:s');
 
 	if(isset($_POST['status_post'])){
 		$status_post = $_POST['status_text'];
@@ -14,8 +16,8 @@
 		$user_location = $_POST['user_location'];
 		$status_post = str_replace('"', "", $status_post);
 		$status_post = str_replace("'", "", $status_post);
-		$mysqli->query(" INSERT INTO user_posts ( user_id, user_status, user_post, user_long, user_lat, user_location /*, user_location */) 
-		VALUES('$user_id', '$status_safety', '$status_post', '$client_lng' ,'$client_lat', '$user_location' ) ") or die ($mysqli->error());
+		$mysqli->query(" INSERT INTO user_posts ( user_id, user_status, user_post, user_long, user_lat, user_location, date_added /*, user_location */) 
+		VALUES('$user_id', '$status_safety', '$status_post', '$client_lng' ,'$client_lat', '$user_location','$currentDate' ) ") or die ($mysqli->error());
 		
 		$_SESSION['message'] = "Status posted!";
 		$_SESSION['msg_type'] = "success";

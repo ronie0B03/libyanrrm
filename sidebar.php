@@ -141,14 +141,14 @@ a:visited {
           <span>Users</span></a>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" style="display: none;">
         <a class="nav-link" href="#">
           <i class="fas fa-history"></i>
           <span>Activity Logs</span></a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="tips.php">
           <i class="fas fa-lightbulb"></i>
           <span>Tips</span></a>
       </li>            

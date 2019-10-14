@@ -85,6 +85,15 @@
                     <img src="img/danger_location.png" height="30" width="30" />
                     <span style="line-height:30px;font-weight:bold;margin:0px 10px"> Danger </span>
                 </div>
+                <div style="display:flex;height:30px;width:100%;box-sizing:border-box;">
+                    <img src="img/suggested_location.png" height="30" width="30" />
+                    <span style="line-height:30px;font-weight:bold;margin:0px 10px"> Suggested  </span>
+                </div>
+                <div style="display:flex;height:30px;width:100%;box-sizing:border-box;">
+                    <img src="img/user_location.png" height="30" width="30" />
+                    <span id="label-userlocation" style="line-height:30px;font-weight:bold;margin:0px 10px">Your location (Location permission is blocked)</span>
+                </div>
+                <!-- <button id="btntest" style="margin-top:30px;">test</button> -->
             </div>
         </div>
 <!-- Own Status always on on top -->
@@ -94,26 +103,26 @@
 ?>
 
 <script>
+var user_lat = undefined;
+var user_lng = undefined;
+var safe_coordinates = undefined;
+var map;
 $(document).ready(function(){
     $("#nav-item-home").removeClass("active");
     $("#nav-item-safelocation").addClass("active");
+
+    navigator.geolocation.getCurrentPosition(function(position){
+      $("#label-userlocation").html("Your location");
+        user_lat = position.coords.latitude;
+      user_lng = position.coords.longitude;
+      });
+    
 });
-var map;
 
 
 function initMap() {
-    
-  //var libya = {lat: 26.0773223, lng: 16.1605419};
-  var libya = {lat: 15.4130117, lng: 121.3646784};
-    
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 9,  
-      mapTypeControlOptions: {
-      mapTypeIds: [google.maps.MapTypeId.ROADMAP]
-      },
-      streetViewControl: false,center: libya});      
-
-      var safe_image = {
+       
+  var safe_image = {
     url: 'img/safe_location.png',
     size: new google.maps.Size(50, 50),
     origin: new google.maps.Point(0, 0),
@@ -124,10 +133,34 @@ function initMap() {
     size: new google.maps.Size(50, 50),
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(25, 25)
+  };    
+  var suggested_image = {
+    url: 'img/suggested_location.png',
+    size: new google.maps.Size(50, 50),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(25, 25)
+  }; 
+  var user_location_image = {
+    url: 'img/user_location.png',
+    size: new google.maps.Size(50, 50),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(25, 25  )
   };
+
+  //var libya = {lat: 26.0773223, lng: 16.1605419};
+  var libya = {lat: 15.4130117, lng: 121.3646784};
+    
+  var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 9,  
+      mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP]
+      },
+      streetViewControl: false,center: libya});      
+
 
   <?php 
 
+    $safe_locations = [];
     while($row = $user_post_locations->fetch_assoc()){
       
       $status_images = ["safe" => "safe_image",
@@ -135,21 +168,85 @@ function initMap() {
       $status_image = $status_images[$row["user_status"]];
       $lat = $row["user_lat"];
       $lng = $row["user_long"];
-     
+
+      if($status_image == "safe_image"){
+        array_push($safe_locations, ["lat"=>$lat, "lng"=>$lng]);
+      }
+    
 
     echo "
     new google.maps.Marker({position: {lat: $lat, lng: $lng}, map: map , icon:$status_image});
     ";
+
+    
     }
 
-    // new google.maps.Marker({position: {lat: -26.344, lng: 132.036}, map: map , icon:danger_image});
-    // new google.maps.Marker({position: {lat: -27.344, lng: 132.036}, map: map , icon:danger_image});
-    // new google.maps.Marker({position: {lat: -28.344, lng: 134.036}, map: map , icon:danger_image});  
-    // new google.maps.Marker({position: {lat: -25.344, lng: 134.036}, map: map , icon:safe_image});  
-    // new google.maps.Marker({position: {lat: -28.544, lng: 130.036}, map: map , icon:safe_image});  
-    // new google.maps.Marker({position: {lat: -31.344, lng: 134.036}, map: map , icon:safe_image});
-  ?>
+    $json_safe_locations = json_encode($safe_locations);
+    echo "safe_coordinates = JSON.parse('$json_safe_locations');";
+    // echo "alert(safe_coordinates.length);";
+   
 
+  ?>
+  google.maps.event.addListenerOnce(map, 'idle', function(){
+    if(user_lat != undefined && 
+        user_lng != undefined){
+        new google.maps.Marker({position: {lat:user_lat , lng: user_lng}, map: map, icon:user_location_image });
+
+
+
+        
+          var suggested_location = {lat : -1, lng : -1};
+          if(safe_coordinates.length > 0){
+
+            suggested_location.lat = parseFloat(safe_coordinates[0].lat);
+            suggested_location.lng = parseFloat(safe_coordinates[0].lng);
+
+            for(var i = 0; i < safe_coordinates.length-1; i++){
+
+              if(distance(user_lat,user_lng, safe_coordinates[i].lat, safe_coordinates[i].lng, "K")          > 
+                 distance(user_lat,user_lng, safe_coordinates[i + 1].lat, safe_coordinates[i + 1].lng, "K")  ){
+                  
+                  suggested_location.lat = parseFloat(safe_coordinates[i + 1].lat);
+                  suggested_location.lng = parseFloat(safe_coordinates[i + 1].lng);
+                }
+
+              }
+
+              //alert(JSON.stringify(suggested_location));
+              new google.maps.Marker({position: suggested_location, map: map, icon:suggested_image });
+          }
+
+
+        }
+
+
+  });
+
+  
+  
 }
+
+function distance(lat1, lon1, lat2, lon2, unit) {
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+		var radlat1 = Math.PI * lat1/180;
+		var radlat2 = Math.PI * lat2/180;
+		var theta = lon1-lon2;
+		var radtheta = Math.PI * theta/180;
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+		}
+		dist = Math.acos(dist);
+		dist = dist * 180/Math.PI;
+		dist = dist * 60 * 1.1515;
+		if (unit=="K") { dist = dist * 1.609344 }
+		if (unit=="N") { dist = dist * 0.8684 }
+		return dist;
+	}
+}
+
 </script>
  <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyArrxFTbz_rmzdZg68nNyMmWkTARS_hfrY&callback=initMap' async defer></script>
